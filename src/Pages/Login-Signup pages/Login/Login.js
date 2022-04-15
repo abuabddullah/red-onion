@@ -1,9 +1,9 @@
 import './Login.css';
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import logo from './../../../resources-red-onion/images/logo2.png'
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import auth from '../../../firebase.init';
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -11,6 +11,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import Loading from '../../Loading/Loading';
 
 const Login = () => {
+    const [email, setEmail] = useState('');
+
+    // protecting private route
+    let location = useLocation();
+    let from = location.state?.from?.pathname || "/";
+
+
     const navigate = useNavigate();
     const [
         signInWithEmailAndPassword,
@@ -18,6 +25,17 @@ const Login = () => {
         loading,
         error,
     ] = useSignInWithEmailAndPassword(auth);
+
+    const [sendPasswordResetEmail, sending4ResetPassword, error4ResetPassword] = useSendPasswordResetEmail(auth);
+
+    const handleEmailOnBlur = (e) => {
+        if (e.target.value === '') {
+            setEmail('');
+            return;
+        } else {
+            setEmail(e.target.value);
+        }
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -39,17 +57,26 @@ const Login = () => {
     }
 
 
-    if (error) {
-        toast.error(error.message);
+    if (error || error4ResetPassword) {
+        toast.error(error?.message);
     }
 
-    if (loading) {
+    if (loading || sending4ResetPassword) {
         return <Loading />
     }
 
     if (user) {
+        navigate(from, { replace: true });
         toast.success('Login Successful');
-        navigate('/');
+    }
+
+    const resetpassword = async (e) => {
+        if (email) {
+            await sendPasswordResetEmail(email);
+            toast('Sent email');
+        } else {
+            toast('Please enter email');
+        }
     }
 
 
@@ -64,13 +91,13 @@ const Login = () => {
                         label="Email address"
                         className="mb-3"
                     >
-                        <Form.Control type="email" placeholder="name@example.com" name='email'/>
+                        <Form.Control type="email" placeholder="name@example.com" name='email' onBlur={handleEmailOnBlur} required />
                     </FloatingLabel>
 
                     <FloatingLabel controlId="floatingPassword4login" label="Password"
                         className="mb-3"
                     >
-                        <Form.Control type="password" placeholder="Password" name='password'/>
+                        <Form.Control type="password" placeholder="Password" name='password' />
                     </FloatingLabel>
 
                     <div className="d-grid gap-2 mb-3">
@@ -79,9 +106,9 @@ const Login = () => {
                         </Button>
                     </div>
                     <p><small style={{ color: "red", cursor: "pointer" }} onClick={() => navigate(`/signup`)}>Don't have account?</small></p>
-                    <p><small className='text-primary' style={{ cursor: "pointer" }} onClick={() => navigate(`/signup`)}>Forgot password?</small></p>
+                    <p><small className='text-primary' style={{ cursor: "pointer" }} onClick={resetpassword}>Forgot password?</small></p>
                 </Form>
-            <ToastContainer />
+                <ToastContainer />
             </div>
         </section>
     );

@@ -1,3 +1,4 @@
+import './Banner.css'
 import React from 'react';
 import { FormControl, InputGroup } from 'react-bootstrap';
 
@@ -18,7 +19,7 @@ const Banner = () => {
                         aria-label="Food's name"
                         aria-describedby="basic-addon2"
                     />
-                    <InputGroup.Text className='rounded-pill bg-danger border-0 text-white px-3 position-absolute end-0 p-2' id="basic-addon2">Search</InputGroup.Text>
+                    <InputGroup.Text className='rounded-pill bg-danger border-0 text-white px-3 px-lg-5 cursor-pointer position-absolute end-0 p-2 z-20' id="basic-addon2">Search</InputGroup.Text>
                 </InputGroup>
             </div>
             </div>

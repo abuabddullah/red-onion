@@ -1,5 +1,5 @@
 import './NavBar.css';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import logo from './../../../resources-red-onion/images/logo2.png'
@@ -13,8 +13,10 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loading from '../../Loading/Loading';
+import { Datas4Context } from '../../../App';
 
 const NavBar = () => {
+    const {carts,setCarts,addToCarts} = useContext(Datas4Context);
     const [user, loading, error] = useAuthState(auth);
 
     const handleSignOut = () => {
@@ -48,7 +50,7 @@ const NavBar = () => {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="ms-auto fw-bold">
                         <Nav.Link as={CustomLink} to="/carts">
-                            <FontAwesomeIcon icon={faCartShopping} />
+                            <FontAwesomeIcon icon={faCartShopping} />({carts.length})
                         </Nav.Link>
 
 
