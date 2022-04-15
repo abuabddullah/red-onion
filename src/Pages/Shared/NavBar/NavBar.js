@@ -6,8 +6,32 @@ import logo from './../../../resources-red-onion/images/logo2.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { CustomLink } from './CustomLink';
+import auth from '../../../firebase.init';
+import { signOut } from 'firebase/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Loading from '../../Loading/Loading';
 
 const NavBar = () => {
+    const [user, loading, error] = useAuthState(auth);
+
+    const handleSignOut = () => {
+        signOut(auth);
+        toast('Signed out');
+    }
+
+    if (loading) {
+        return <Loading />
+    }
+
+    if (error) {
+        toast.error(error.message);
+    }
+
+
+
     return (
         <Navbar className='p-3' collapseOnSelect expand="lg" bg="white" variant="light" sticky="top">
             <Container>
@@ -24,10 +48,21 @@ const NavBar = () => {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="ms-auto fw-bold">
                         <Nav.Link as={CustomLink} to="/carts">
-                        <FontAwesomeIcon icon={faCartShopping} />
+                            <FontAwesomeIcon icon={faCartShopping} />
                         </Nav.Link>
-                        <Nav.Link className='mx-lg-4' as={CustomLink} to="/login">Login</Nav.Link>
-                        <Button className='rounded-pill px-3 text-white' as={Link} to="/signup" variant="danger">Sign up</Button>
+
+
+                        {
+                            !user ? <><Nav.Link className='mx-lg-4' as={CustomLink} to="/login">Login</Nav.Link>
+                                <Button className='rounded-pill px-3 text-white' as={Link} to="/signup" variant="danger">Sign up</Button></> : <>
+                                <Nav.Link className='mx-lg-4' as={CustomLink} to="/profile">{user?.user?.displayName}</Nav.Link>
+                                <Button onClick={handleSignOut} className='rounded-pill px-3 text-white' variant="danger">Sign out</Button>
+                            </>
+                        }
+
+
+
+                        <ToastContainer />
                     </Nav>
                 </Navbar.Collapse>
             </Container>

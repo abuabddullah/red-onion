@@ -3,7 +3,6 @@ import React from 'react';
 import Banner from '../Banner/Banner';
 import FoodMenu from '../FoodMenu/FoodMenu';
 import { Link, Outlet } from 'react-router-dom';
-import CustomLink4Home from './CustomLink4Home';
 import { Button } from 'react-bootstrap';
 import WhyChooseUs from '../WhyChooseUs/WhyChooseUs';
 
@@ -14,11 +13,9 @@ const Home = () => {
 
             <section className='p-5'>
                 <div className="container">
-                    <div className="text-center mx-auto fw-bold">
-                        <CustomLink4Home className='text-dark text-decoration-none' to="breakfast">Breakfast</CustomLink4Home>
-                        <CustomLink4Home className='text-dark text-decoration-none mx-4' to="lunch">Lunch</CustomLink4Home>
-                        <CustomLink4Home className='text-dark text-decoration-none' to="dinner">Dinner</CustomLink4Home>
-                    </div>
+
+
+                    <FoodMenu />
 
                     <div className='mt-5 p-4'>
                         <Outlet />
@@ -29,7 +26,6 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-            {/* <FoodMenu /> */}
 
             <WhyChooseUs />
         </div>

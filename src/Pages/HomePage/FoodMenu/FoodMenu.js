@@ -1,25 +1,15 @@
 import './FoodMenu.css';
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import CustomLink4Home from '../Home/CustomLink4Home';
 
 const FoodMenu = () => {
     return (
 
-        <>
-            <section className='p-5'>
-                <div className="container">
-                    <div className="text-center mx-auto fw-bold">
-                        <Link className='text-dark text-decoration-none' to="breakfast">Breakfast</Link>
-                        <Link className='text-dark text-decoration-none mx-4' to="lunch">Lunch</Link>
-                        <Link className='text-dark text-decoration-none' to="dinner">Dinner</Link>
+        <div className="text-center mx-auto fw-bold">
+                        <CustomLink4Home className='text-dark text-decoration-none' to="breakfast">Breakfast</CustomLink4Home>
+                        <CustomLink4Home className='text-dark text-decoration-none mx-4' to="lunch">Lunch</CustomLink4Home>
+                        <CustomLink4Home className='text-dark text-decoration-none' to="dinner">Dinner</CustomLink4Home>
                     </div>
-
-                    <div className='my-5 p-4'>
-                        <Outlet />
-                    </div>
-                </div>
-            </section>
-        </>
     );
 };
 

@@ -14,7 +14,7 @@ const CustomLink4Home = ({ children, to, ...props }) => {
         >
             {children}
         </Link>
-        {match && " "}
+        {match && ""}
         </>
     );
 };
